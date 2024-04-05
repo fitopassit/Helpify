@@ -1,7 +1,5 @@
 import { PrismaClient } from "@prisma/client";
 
-// import "./notifyTcavsCrone";
-
 declare namespace globalThis {
   let prisma: PrismaClient | undefined;
 }
@@ -19,16 +17,3 @@ if (typeof window === "undefined") {
     prisma = globalThis.prisma;
   }
 }
-
-declare global {
-  interface BigInt {
-    toJSON(): string | number;
-  }
-}
-
-// Необходимо для того, что БД корректно обрабатывала BitInt
-// https://stackoverflow.com/questions/75947475/prisma-typeerror-do-not-know-how-to-serialize-a-bigint/76013128#76013128
-BigInt.prototype.toJSON = function () {
-  const int = Number.parseInt(this.toString());
-  return int || this.toString();
-};

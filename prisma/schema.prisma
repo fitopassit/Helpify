@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -14,14 +8,142 @@ datasource db {
 }
 
 model User {
-  id            String   @id @default(uuid())
-  name          String   @db.VarChar(255)
-  email         String   @db.VarChar(255)
-  password_hash String   @db.VarChar(255)
-  created_at    DateTime @default(now())
-  updated_at    DateTime @updatedAt
-  active        Boolean  @default(true)
+  id           String @id @default(uuid())
+  name         String
+  email        String
+  passwordHash String
+
+  isDisabled Boolean @default(false)
+
+  role Role
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Server            Server @relation(fields: [connectedServerId], references: [id])
+  connectedServerId String
+
+  UpdatedServerRules     ServerRules[]
+  UpdatedSubChapterItems SubChapterItem[]
+  UpdatedChapterItem     ChapterItem[]
+  UpdatedChapter         Chapter[]
+  UpdatedLaws            Laws[]
 
   @@unique([email])
   @@map("users")
+}
+
+enum Role {
+  Admin // Админ всего ресурса
+  Curator // Ответственный за сервер
+  Editor // Редактор правила и кодексов сервера
+}
+
+model Server {
+  id               String        @id @default(uuid())
+  name             String
+  allLaws          Laws[] // Кодексы, законы всего сервера
+  localServerRules ServerRules[] // Правила сервера
+
+  Users User[]
+
+  @@map("servers")
+}
+
+model Laws {
+  id       String    @id @default(uuid())
+  name     String
+  chapters Chapter[]
+
+  updatedAt     DateTime @updatedAt
+  updatedByUser User     @relation(fields: [updatedBy], references: [id])
+  updatedBy     String
+
+  Server   Server @relation(fields: [serverId], references: [id])
+  serverId String
+
+  @@map("laws")
+}
+
+model ServerRules {
+  id       String    @id @default(uuid())
+  name     String
+  chapters Chapter[]
+
+  updatedAt     DateTime @updatedAt
+  updatedByUser User     @relation(fields: [updatedBy], references: [id])
+  updatedBy     String
+
+  Server   Server @relation(fields: [serverId], references: [id])
+  serverId String
+
+  @@map("serverRules")
+}
+
+model GlobalServerRules {
+  id       String    @id @default(uuid())
+  name     String
+  chapters Chapter[]
+
+  @@map("globalServerRules")
+}
+
+model Chapter {
+  id            String        @id @default(uuid())
+  chapterNumber String
+  chapterName   String
+  chapterItems  ChapterItem[]
+
+  updatedAt     DateTime @updatedAt
+  updatedByUser User     @relation(fields: [updatedBy], references: [id])
+  updatedBy     String
+
+  ServerRules ServerRules? @relation(fields: [rulesId], references: [id])
+  rulesId     String?
+
+  GlobalServerRules   GlobalServerRules? @relation(fields: [globalServerRulesId], references: [id])
+  globalServerRulesId String?
+
+  Laws   Laws?   @relation(fields: [lawsId], references: [id])
+  lawsId String?
+
+  @@map("chapters")
+}
+
+model ChapterItem {
+  id           String           @id @default(uuid())
+  article      String
+  titleArticle String
+  punishment   Json? // String[]
+  keyword      Json? // String[]
+  exception    String?
+  explanation  String?
+  note         String?
+  list         SubChapterItem[]
+  updatedAt    DateTime         @updatedAt
+
+  UpdatedByUser User   @relation(fields: [updatedBy], references: [id])
+  updatedBy     String
+
+  Chapter   Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  chapterId String
+
+  @@map("chapterItems")
+}
+
+model SubChapterItem {
+  id           String   @id @default(uuid())
+  article      String
+  titleArticle String
+  note         String?
+  exception    String?
+  updatedAt    DateTime @updatedAt
+
+  UpdatedByUser User   @relation(fields: [updatedBy], references: [id])
+  updatedBy     String
+
+  ChapterItem   ChapterItem @relation(fields: [chapterItemId], references: [id], onDelete: Cascade)
+  chapterItemId String
+
+  @@map("subChapterItems")
 }

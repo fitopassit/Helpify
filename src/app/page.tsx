@@ -1,13 +1,10 @@
 import Image from "next/image";
 
-import AddUser from "@/app/components/AddUser";
-
-import { getUsers } from "./models/user";
 import styles from "./page.module.css";
 
-export default async function Home() {
-  const users = await getUsers();
+export const dynamic = "force-dynamic";
 
+export default function Home() {
   return (
     <main className={styles.main}>
       <div className={styles.description}>
@@ -98,7 +95,7 @@ export default async function Home() {
         </a>
       </div>
 
-      <AddUser users={users} />
+      {/*<AddUser users={users} />*/}
     </main>
   );
 }
