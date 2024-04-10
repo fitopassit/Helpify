@@ -1,0 +1,25 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+
+  background: #202020;
+  padding: 12px;
+  border-radius: 4px;
+}
+
+.innerContainer {
+  margin-bottom: 12px;
+  display: flex;
+  flex-direction: column;
+}
+
+.googleSheet a {
+  display: flex;
+  align-items: center;
+}
+
+.googleSheetIcon {
+  height: 12px;
+  margin-right: 4px;
+}

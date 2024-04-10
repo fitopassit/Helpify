@@ -1,0 +1,1 @@
+export { ModalWelcomeInfo } from "./ModalWelcomeInfo";

@@ -5,6 +5,23 @@
   align-items: center;
   padding: 6rem;
   min-height: 100vh;
+  background-color: #282828;
+}
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 24px;
+
+  min-height: calc(100vh - 200px);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.wideContainer {
+  composes: container;
+  max-width: 1280px;
 }
 
 .description {
@@ -83,6 +100,10 @@
   padding: 4rem 0;
 }
 
+.body {
+  background: #282828;
+}
+
 .center::before {
   background: var(--secondary-glow);
   border-radius: 50%;
@@ -110,6 +131,7 @@
 .logo {
   position: relative;
 }
+
 /* Enable hover only on non-touch devices */
 @media (hover: hover) and (pointer: fine) {
   .card:hover {

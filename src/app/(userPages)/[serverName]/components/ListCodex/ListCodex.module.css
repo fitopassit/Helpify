@@ -1,0 +1,22 @@
+.list {
+  padding: 0;
+}
+
+.titleCodex {
+  margin: 16px 0;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.noContentContainer {
+  margin-top: 20px;
+}
+
+.chapter {
+  font-size: 18px;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 16px;
+  text-align: center;
+}

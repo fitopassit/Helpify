@@ -1,9 +1,11 @@
+import classNames from "classnames";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 
-import "./globals.css";
+import { Footer } from "@/app/components/Footer";
+import { Header } from "@/app/components/Header";
+import ThemeProviderContext from "@/app/context/ThemeProviderContext";
 
-const inter = Inter({ subsets: ["latin"] });
+import styles from "./page.module.css";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -16,8 +18,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <html lang="ru">
+      <body className={styles.body}>
+        <ThemeProviderContext>
+          <section
+            className={classNames(styles.container, {
+              [styles.wideContainer!]: true,
+            })}
+          >
+            <Header />
+            {children}
+            <Footer />
+          </section>
+        </ThemeProviderContext>
+      </body>
     </html>
   );
 }
