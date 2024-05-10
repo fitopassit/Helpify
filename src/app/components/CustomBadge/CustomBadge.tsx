@@ -1,15 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { ModalWelcomeInfo } from "@/app/components/Header/components/ModalWelcomeInfo";
 
 import styles from "./CustomBadge.module.css";
 
 export const CustomBadge = () => {
-  const [openedDialogInfo, setOpenedDialogInfo] = useState(
-    () => !localStorage.getItem("dialog10"),
-  );
+  const [openedDialogInfo, setOpenedDialogInfo] = useState(false);
+
+  useEffect(() => {
+    setOpenedDialogInfo(!localStorage.getItem("dialog10"));
+  }, []);
 
   const changeStatus = () => {
     setOpenedDialogInfo(!openedDialogInfo);

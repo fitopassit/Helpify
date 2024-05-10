@@ -1,23 +1,31 @@
 .header {
-  display: flex;
-  position: relative;
-  justify-content: flex-start;
-  /*margin: 24px auto;*/
-  margin-bottom: 24px;
-  max-width: 1280px;
-  flex-direction: column;
-  align-items: flex-start;
-  background: #202020;
-  border-radius: 4px;
+    display: flex;
+    position: relative;
+    justify-content: flex-start;
+    /*margin: 24px auto;*/
+    margin-bottom: 24px;
+    max-width: 1280px;
+    flex-direction: column;
+    align-items: flex-start;
+    background: #202020;
+    border-radius: 4px;
 }
 
 .container {
-  padding: 12px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+}
+
+.button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .title {
-  position: relative;
-  display: flex;
+    position: relative;
+    display: flex;
 }
 
 /*.switch {*/
@@ -27,29 +35,28 @@
 /*}*/
 
 .logo {
-  position: absolute;
-  top: 20px;
-  right: 24px;
+    position: absolute;
+    top: 20px;
+    right: 24px;
 }
 
 .logo img {
-  height: 64px;
+    height: 64px;
 }
 
 .logo a {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
 }
 
 .neon {
-  font-size: 80px;
-  color: #ffd5ff;
-  margin: 0;
-  font-weight: 400;
-  letter-spacing: 8px;
-  text-shadow:
-    1px 0 4px #ffd5ff,
+    font-size: 80px;
+    color: #ffd5ff;
+    margin: 0;
+    font-weight: 400;
+    letter-spacing: 8px;
+    text-shadow: 1px 0 4px #ffd5ff,
     2px 0 4px #ffd5ff,
     3px 0 4px #ffd5ff,
     2px 0 3px #d42cca,
@@ -61,22 +68,21 @@
 }
 
 .flickerSlow {
-  position: relative;
+    position: relative;
 }
 
 .flickerSlow::after {
-  position: absolute;
-  content: ".";
-  top: -59px;
-  left: -2px;
-  height: 5px;
-  width: 5px;
-  color: #df005b;
-  font-size: 80px;
-  animation: flicker 7s linear infinite;
-  border-radius: 50%;
-  text-shadow:
-    0 0 4px #ffd5ff,
+    position: absolute;
+    content: ".";
+    top: -59px;
+    left: -2px;
+    height: 5px;
+    width: 5px;
+    color: #df005b;
+    font-size: 80px;
+    animation: flicker 7s linear infinite;
+    border-radius: 50%;
+    text-shadow: 0 0 4px #ffd5ff,
     0 0 4px #ffd5ff,
     0 0 4px #ffd5ff,
     0 0 3px #d42cca,
@@ -85,30 +91,30 @@
     5px 0 125px,
     20px 0 200px #d42cca,
     40px 0 200px #d42cca;
-  z-index: 10;
+    z-index: 10;
 }
 
 .flickerSlow::before {
-  position: absolute;
-  content: ".";
-  top: -58px;
-  left: -2px;
-  height: 8px;
-  width: 8px;
-  color: white;
-  font-size: 80px;
-  z-index: 5;
+    position: absolute;
+    content: ".";
+    top: -58px;
+    left: -2px;
+    height: 8px;
+    width: 8px;
+    color: white;
+    font-size: 80px;
+    z-index: 5;
 }
 
 .flickerSlowDark {
-  composes: flickerSlow;
+    composes: flickerSlow;
 }
 
 .flickerSlowDark::before {
-  /*composes: flickerSlow;*/
-  color: #282828;
-  /*text-shadow: 1px 0px 4px #000000, 2px 0px 4px #726f72, 0px 0px 4px #ffd5ff, 0px 0px 3px #d42cca, 0px 0px 15px #d42cca,*/
-  /*  0px 0px 15px, 5px 0px 125px, 20px 0vw 200px #d42cca, 40px 0vw 200px #d42cca;*/
+    /*composes: flickerSlow;*/
+    color: #282828;
+    /*text-shadow: 1px 0px 4px #000000, 2px 0px 4px #726f72, 0px 0px 4px #ffd5ff, 0px 0px 3px #d42cca, 0px 0px 15px #d42cca,*/
+    /*  0px 0px 15px, 5px 0px 125px, 20px 0vw 200px #d42cca, 40px 0vw 200px #d42cca;*/
 }
 
 /*.flickerFast {*/
@@ -116,54 +122,54 @@
 /*}*/
 
 @keyframes flicker {
-  0%,
-  19.999%,
-  22%,
-  62.999%,
-  64%,
-  64.999%,
-  70%,
-  100% {
-    background: none;
-    opacity: 0.99;
-  }
-  20%,
-  21.999%,
-  63%,
-  63.999%,
-  65%,
-  69.999% {
-    opacity: 0.4;
-  }
+    0%,
+    19.999%,
+    22%,
+    62.999%,
+    64%,
+    64.999%,
+    70%,
+    100% {
+        background: none;
+        opacity: 0.99;
+    }
+    20%,
+    21.999%,
+    63%,
+    63.999%,
+    65%,
+    69.999% {
+        opacity: 0.4;
+    }
 }
 
 .newFeatureContainer {
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
 }
 
 .newFeatureContainer span.text {
-  margin-right: 4px;
+    margin-right: 4px;
 }
 
 .bounce {
-  animation: bounce 3s linear infinite;
+    animation: bounce 3s linear infinite;
 }
 
 @keyframes bounce {
-  0%,
-  25%,
-  50%,
-  75%,
-  100% {
-    transform: translateY(0);
-  }
-  40% {
-    transform: translateY(-12px);
-  }
-  60% {
-    transform: translateY(-8px);
-  }
+    0%,
+    25%,
+    50%,
+    75%,
+    100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-12px);
+    }
+    60% {
+        transform: translateY(-8px);
+    }
 }
 
 /*.faq {*/

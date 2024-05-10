@@ -1,21 +1,18 @@
-import { Link, Tab, Tabs, Typography } from "@mui/material";
+import { Link, Typography } from "@mui/material";
 import classNames from "classnames";
 import Image from "next/image";
-import { FC, memo, SyntheticEvent, useCallback, useState } from "react";
 
 import LogoWashington from "@/../public/washington_famaliy_logo.png";
-import { ModalWelcomeInfo } from "@/app/components/Header/components/ModalWelcomeInfo/";
 import TabsHeader from "@/app/components/Header/components/TabsHeader/TabsHeader";
-import { PATH_PAGES } from "@/app/utils/contants";
-
 import { CustomBadge } from "../CustomBadge";
 import styles from "./Header.module.css";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
-export const Header = memo((props) => {
-  // const [opened, setOpened] = useState(false);
-  // const toggleOpen = useCallback(() => setOpened(true), []);
-  // const toggleClose = useCallback(() => setOpened(false), []);
 
+export const Header = async (props) => {
+  // const session = await getServerSession(authOptions)
+  // const user = session?.user;
   return (
     <header className={styles.header}>
       <div className={styles.container}>
@@ -36,8 +33,11 @@ export const Header = memo((props) => {
           </span>
           <Typography variant={"caption"}>Server Washington</Typography>
         </section>
-        <TabsHeader />
+        <div className={styles.button}>
+          <TabsHeader />
+        </div>
       </div>
+
       <div className={styles.logo}>
         <Link href={"https://www.washington-squad.ru/"} target={"_blank"}>
           <Image
@@ -49,8 +49,6 @@ export const Header = memo((props) => {
           <Typography variant={"body1"}>Washington FamQ</Typography>
         </Link>
       </div>
-
-      {/*<ModalWelcomeInfo onClose={toggleClose} opened={opened} />*/}
     </header>
   );
-});
+};

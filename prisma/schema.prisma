@@ -8,74 +8,82 @@ datasource db {
 }
 
 model User {
-  id           String @id @default(uuid())
-  name         String
-  email        String
-  passwordHash String
+  id                     String           @id @default(cuid())
+  name                   String?
+  isDisabled             Boolean          @default(false)
+  email                  String?          @unique
+  emailVerified          DateTime?
+  role                   Role             @default(User)
+  image                  String
+  accounts               Account[]
+  createdAt              DateTime         @default(now())
+  updatedAt              DateTime         @updatedAt
+  UpdatedChapterItem     ChapterItem[]
+  UpdatedChapter         Chapter[]
+  UpdatedLaws            Laws[]
+  UpdatedServerRules     ServerRules[]
+  UpdatedSubChapterItems SubChapterItem[]
+  Server                 Server?          @relation(fields: [connectedServerId], references: [id])
+  connectedServerId      String?
 
-  isDisabled Boolean @default(false)
+  @@map("users")
+}
 
-  role Role
+model Account {
+  id                       String  @id @default(cuid())
+  userId                   String  @unique
+  type                     String
+  provider                 String
+  providerAccountId        String
+  refresh_token            String? @db.Text
+  access_token             String? @db.Text
+  expires_at               Int?
+  token_type               String?
+  scope                    String?
+  id_token                 String? @db.Text
+  session_state            String?
+  refresh_token_expires_in Int?
+  user                     User    @relation(fields: [userId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  Server            Server @relation(fields: [connectedServerId], references: [id])
-  connectedServerId String
-
-  UpdatedServerRules     ServerRules[]
-  UpdatedSubChapterItems SubChapterItem[]
-  UpdatedChapterItem     ChapterItem[]
-  UpdatedChapter         Chapter[]
-  UpdatedLaws            Laws[]
-
-  @@unique([email])
-  @@map("users")
-}
-
-enum Role {
-  Admin // Админ всего ресурса
-  Curator // Ответственный за сервер
-  Editor // Редактор правила и кодексов сервера
+  @@unique([provider, providerAccountId])
+  @@index([userId])
 }
 
 model Server {
   id               String        @id @default(uuid())
   name             String
-  allLaws          Laws[] // Кодексы, законы всего сервера
-  localServerRules ServerRules[] // Правила сервера
-
-  Users User[]
+  allLaws          Laws[]
+  localServerRules ServerRules[]
+  Users            User[]
 
   @@map("servers")
 }
 
 model Laws {
-  id       String    @id @default(uuid())
-  name     String
-  chapters Chapter[]
-
-  updatedAt     DateTime @updatedAt
-  updatedByUser User     @relation(fields: [updatedBy], references: [id])
+  id            String    @id @default(uuid())
+  name          String
+  updatedAt     DateTime  @updatedAt
   updatedBy     String
-
-  Server   Server @relation(fields: [serverId], references: [id])
-  serverId String
+  serverId      String
+  chapters      Chapter[]
+  Server        Server    @relation(fields: [serverId], references: [id])
+  updatedByUser User      @relation(fields: [updatedBy], references: [id])
 
   @@map("laws")
 }
 
 model ServerRules {
-  id       String    @id @default(uuid())
-  name     String
-  chapters Chapter[]
-
-  updatedAt     DateTime @updatedAt
-  updatedByUser User     @relation(fields: [updatedBy], references: [id])
+  id            String    @id @default(uuid())
+  name          String
+  updatedAt     DateTime  @updatedAt
   updatedBy     String
-
-  Server   Server @relation(fields: [serverId], references: [id])
-  serverId String
+  serverId      String
+  chapters      Chapter[]
+  Server        Server    @relation(fields: [serverId], references: [id])
+  updatedByUser User      @relation(fields: [updatedBy], references: [id])
 
   @@map("serverRules")
 }
@@ -89,61 +97,194 @@ model GlobalServerRules {
 }
 
 model Chapter {
-  id            String        @id @default(uuid())
-  chapterNumber String
-  chapterName   String
-  chapterItems  ChapterItem[]
-
-  updatedAt     DateTime @updatedAt
-  updatedByUser User     @relation(fields: [updatedBy], references: [id])
-  updatedBy     String
-
-  ServerRules ServerRules? @relation(fields: [rulesId], references: [id])
-  rulesId     String?
-
-  GlobalServerRules   GlobalServerRules? @relation(fields: [globalServerRulesId], references: [id])
+  id                  String             @id @default(uuid())
+  chapterNumber       String
+  chapterName         String
+  updatedAt           DateTime           @updatedAt
+  updatedBy           String
+  rulesId             String?
   globalServerRulesId String?
-
-  Laws   Laws?   @relation(fields: [lawsId], references: [id])
-  lawsId String?
+  lawsId              String?
+  chapterItems        ChapterItem[]
+  GlobalServerRules   GlobalServerRules? @relation(fields: [globalServerRulesId], references: [id])
+  Laws                Laws?              @relation(fields: [lawsId], references: [id])
+  ServerRules         ServerRules?       @relation(fields: [rulesId], references: [id])
+  updatedByUser       User               @relation(fields: [updatedBy], references: [id])
 
   @@map("chapters")
 }
 
 model ChapterItem {
-  id           String           @id @default(uuid())
-  article      String
-  titleArticle String
-  punishment   Json? // String[]
-  keyword      Json? // String[]
-  exception    String?
-  explanation  String?
-  note         String?
-  list         SubChapterItem[]
-  updatedAt    DateTime         @updatedAt
-
-  UpdatedByUser User   @relation(fields: [updatedBy], references: [id])
+  id            String           @id @default(uuid())
+  article       String
+  titleArticle  String
+  punishment    Json?
+  keyword       Json?
+  exception     String?
+  explanation   String?
+  note          String?
+  updatedAt     DateTime         @updatedAt
   updatedBy     String
-
-  Chapter   Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
-  chapterId String
+  chapterId     String
+  Chapter       Chapter          @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  UpdatedByUser User             @relation(fields: [updatedBy], references: [id])
+  list          SubChapterItem[]
 
   @@map("chapterItems")
 }
 
 model SubChapterItem {
-  id           String   @id @default(uuid())
-  article      String
-  titleArticle String
-  note         String?
-  exception    String?
-  updatedAt    DateTime @updatedAt
-
-  UpdatedByUser User   @relation(fields: [updatedBy], references: [id])
+  id            String      @id @default(uuid())
+  article       String
+  titleArticle  String
+  note          String?
+  exception     String?
+  updatedAt     DateTime    @updatedAt
   updatedBy     String
-
-  ChapterItem   ChapterItem @relation(fields: [chapterItemId], references: [id], onDelete: Cascade)
   chapterItemId String
+  ChapterItem   ChapterItem @relation(fields: [chapterItemId], references: [id], onDelete: Cascade)
+  UpdatedByUser User        @relation(fields: [updatedBy], references: [id])
 
   @@map("subChapterItems")
 }
+
+enum Role {
+  Admin
+  Curator
+  Editor
+  User
+}
+
+// model User {
+//   id                     String           @id @default(uuid())
+//   name                   String
+//   email                  String           @unique
+//   isDisabled             Boolean          @default(false)
+//   role                   Role
+//   createdAt              DateTime         @default(now())
+//   updatedAt              DateTime         @updatedAt
+//   connectedServerId      String
+//   UpdatedChapterItem     ChapterItem[]
+//   UpdatedChapter         Chapter[]
+//   UpdatedLaws            Laws[]
+//   UpdatedServerRules     ServerRules[]
+//   UpdatedSubChapterItems SubChapterItem[]
+//   Server                 Server           @relation(fields: [connectedServerId], references: [id])
+//
+//   @@index([connectedServerId], map: "users_connectedServerId_fkey")
+//   @@map("users")
+// }
+//
+// model Server {
+//   id               String        @id @default(uuid())
+//   name             String
+//   allLaws          Laws[]
+//   localServerRules ServerRules[]
+//   Users            User[]
+//
+//   @@map("servers")
+// }
+//
+// model Laws {
+//   id            String    @id @default(uuid())
+//   name          String
+//   updatedAt     DateTime  @updatedAt
+//   updatedBy     String
+//   serverId      String
+//   chapters      Chapter[]
+//   Server        Server    @relation(fields: [serverId], references: [id])
+//   updatedByUser User      @relation(fields: [updatedBy], references: [id])
+//
+//   @@index([serverId], map: "laws_serverId_fkey")
+//   @@index([updatedBy], map: "laws_updatedBy_fkey")
+//   @@map("laws")
+// }
+//
+// model ServerRules {
+//   id            String    @id @default(uuid())
+//   name          String
+//   updatedAt     DateTime  @updatedAt
+//   updatedBy     String
+//   serverId      String
+//   chapters      Chapter[]
+//   Server        Server    @relation(fields: [serverId], references: [id])
+//   updatedByUser User      @relation(fields: [updatedBy], references: [id])
+//
+//   @@index([serverId], map: "serverRules_serverId_fkey")
+//   @@index([updatedBy], map: "serverRules_updatedBy_fkey")
+//   @@map("serverRules")
+// }
+//
+// model GlobalServerRules {
+//   id       String    @id @default(uuid())
+//   name     String
+//   chapters Chapter[]
+//
+//   @@map("globalServerRules")
+// }
+//
+// model Chapter {
+//   id                  String             @id @default(uuid())
+//   chapterNumber       String
+//   chapterName         String
+//   updatedAt           DateTime           @updatedAt
+//   updatedBy           String
+//   rulesId             String?
+//   globalServerRulesId String?
+//   lawsId              String?
+//   chapterItems        ChapterItem[]
+//   GlobalServerRules   GlobalServerRules? @relation(fields: [globalServerRulesId], references: [id])
+//   Laws                Laws?              @relation(fields: [lawsId], references: [id])
+//   ServerRules         ServerRules?       @relation(fields: [rulesId], references: [id])
+//   updatedByUser       User               @relation(fields: [updatedBy], references: [id])
+//
+//   @@index([globalServerRulesId], map: "chapters_globalServerRulesId_fkey")
+//   @@index([lawsId], map: "chapters_lawsId_fkey")
+//   @@index([rulesId], map: "chapters_rulesId_fkey")
+//   @@index([updatedBy], map: "chapters_updatedBy_fkey")
+//   @@map("chapters")
+// }
+//
+// model ChapterItem {
+//   id            String           @id @default(uuid())
+//   article       String
+//   titleArticle  String
+//   punishment    Json?
+//   keyword       Json?
+//   exception     String?
+//   explanation   String?
+//   note          String?
+//   updatedAt     DateTime         @updatedAt
+//   updatedBy     String
+//   chapterId     String
+//   Chapter       Chapter          @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+//   UpdatedByUser User             @relation(fields: [updatedBy], references: [id])
+//   list          SubChapterItem[]
+//
+//   @@index([chapterId], map: "chapterItems_chapterId_fkey")
+//   @@index([updatedBy], map: "chapterItems_updatedBy_fkey")
+//   @@map("chapterItems")
+// }
+//
+// model SubChapterItem {
+//   id            String      @id @default(uuid())
+//   article       String
+//   titleArticle  String
+//   note          String?
+//   exception     String?
+//   updatedAt     DateTime    @updatedAt
+//   updatedBy     String
+//   chapterItemId String
+//   ChapterItem   ChapterItem @relation(fields: [chapterItemId], references: [id], onDelete: Cascade)
+//   UpdatedByUser User        @relation(fields: [updatedBy], references: [id])
+//
+//   @@index([chapterItemId], map: "subChapterItems_chapterItemId_fkey")
+//   @@index([updatedBy], map: "subChapterItems_updatedBy_fkey")
+//   @@map("subChapterItems")
+// }
+//
+// enum Role {
+//   Admin
+//   Curator
+//   Editor
+// }

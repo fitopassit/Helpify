@@ -1,19 +1,29 @@
+// import { PrismaClient } from "@prisma/client";
+//
+// declare namespace globalThis {
+//   let prisma: PrismaClient | undefined;
+// }
+//
+// export let prisma: PrismaClient;
+//
+// if (typeof window === "undefined") {
+//   if (process.env.NODE_ENV === "production") {
+//     prisma = new PrismaClient();
+//   } else {
+//     if (!globalThis.prisma) {
+//       globalThis.prisma = new PrismaClient();
+//     }
+//
+//     prisma = globalThis.prisma;
+//   }
+// }
 import { PrismaClient } from "@prisma/client";
 
-declare namespace globalThis {
-  let prisma: PrismaClient | undefined;
-}
+const globalForPrisma = global as unknown as { prisma: PrismaClient };
 
-export let prisma: PrismaClient;
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+export const prisma = globalForPrisma.prisma || new PrismaClient();
 
-if (typeof window === "undefined") {
-  if (process.env.NODE_ENV === "production") {
-    prisma = new PrismaClient();
-  } else {
-    if (!globalThis.prisma) {
-      globalThis.prisma = new PrismaClient();
-    }
+if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
 
-    prisma = globalThis.prisma;
-  }
-}
+export default prisma;

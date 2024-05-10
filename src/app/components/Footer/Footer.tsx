@@ -1,6 +1,7 @@
 import TelegramIcon from "@mui/icons-material/Telegram";
 import { IconButton, Link, Typography } from "@mui/material";
 
+
 import styles from "./Footer.module.css";
 
 export const Footer = () => {
