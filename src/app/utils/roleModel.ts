@@ -5,8 +5,11 @@ import { Role, User } from "@prisma/client";
 export const SERVERS = "servers" as const;
 export const SERVERS_ADD = "servers/add" as const;
 
+//TODO: переписать не нужно
 export const ADMINS = "users" as const;
 export const ADMINS_ADD = "users/add" as const;
+
+
 export const CURATORS = "curators" as const;
 export const CURATORS_ADD = "curators/add" as const;
 export const EDITORS = "editors" as const;

@@ -1,15 +1,19 @@
 import { Alert, Button, Typography } from "@mui/material";
 import { getServerSession } from "next-auth";
 import React from "react";
-
-import FilterUsers from "@/app/(dashboardPages)/components/Users/FilterUsers";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { getUserByRole } from "@/app/models/users";
+import { getServers } from "@/app/models/users";
 import { ADMINS, getAllowedTabsForRoleByPathname } from "@/app/utils/roleModel";
+import FilterServers from "@/app/(dashboardPages)/components/Servers/FilterServers";
+
 
 export const dynamic = "force-dynamic";
 export default async function Admins() {
-  const admins = await getUserByRole("Admin");
+
+  
+  
+  const servers = await getServers();
+  // console.log('servers list', servers);
   const session = await getServerSession(authOptions);
 
   const haveAccess = getAllowedTabsForRoleByPathname(
@@ -31,17 +35,17 @@ export default async function Admins() {
         }}
       >
         <Typography variant={"h4"} sx={{ marginBottom: 2 }}>
-          Список всех авторизованных пользователей
+          Список серверов
         </Typography>
         <Button
           variant={"outlined"}
           sx={{ marginBottom: 2 }}
-          href={"/dashboard/users/add"}
+          href={"/dashboard/servers/add"}
         >
-          Создать администратора
+          Добавить сервер
         </Button>
       </div>
-      <FilterUsers users={admins} />
+      <FilterServers servers={servers} />
     </div>
   );
 }

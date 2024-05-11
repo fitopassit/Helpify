@@ -4,7 +4,7 @@ import { Chip, List, Stack } from "@mui/material";
 import { User } from "@prisma/client";
 import { useState } from "react";
 
-import styles from "@/app/(dashboardPages)/components/PreviewUser.module.css";
+import styles from "@/app/(dashboardPages)/components/Users/PreviewUser.module.css";
 import { UserItem } from "./UserItem";
 
 type TypeValue = "AllUsers" | "Active" | "NonActive";

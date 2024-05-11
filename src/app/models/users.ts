@@ -1,8 +1,9 @@
 "use server";
 
-import { prisma } from "@/lib/prisma";
-import { User } from "@prisma/client";
+import { Server, User } from "@prisma/client";
 import z from "zod";
+
+import { prisma } from "@/lib/prisma";
 
 export const addServerLawChapter = async () => {
   await prisma.laws.create({
@@ -35,6 +36,10 @@ export const getUsers = async () => {
   return prisma.user.findMany({});
 };
 
+// servers: Server["name"]
+export const getServers = async () => {
+  return await prisma.server.findMany({});
+};
 
 export const getUserByRole = async (role: User["role"]) => {
   return await prisma.user.findMany({
@@ -75,9 +80,8 @@ export const updateUser = async (formData: FormData) => {
         role: role,
       },
     });
-
   } catch (e) {
-    console.log('updateUser', e);
+    console.log("updateUser", e);
     return e;
   }
 };

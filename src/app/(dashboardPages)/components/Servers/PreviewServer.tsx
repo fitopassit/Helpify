@@ -1,28 +1,27 @@
 import { Edit } from "@mui/icons-material";
 import {
   Avatar,
-  Chip,
   Divider,
   IconButton,
   Stack,
   Typography,
 } from "@mui/material";
-import { User } from "@prisma/client";
+import { Server } from "@prisma/client";
 import React from "react";
 
-import styles from "@/app/(dashboardPages)/components/PreviewUser.module.css";
+import styles from "@/app/(dashboardPages)/components/Users/PreviewUser.module.css";
 
-const PreviewUser = ({
-  dispatcher,
+const PreviewServer = ({
+                         server,
   onChangeMode,
 }: {
-  dispatcher: User;
+  server: Server;
   onChangeMode: (state: boolean) => void;
 }) => {
   return (
     <div className={styles.container}>
       <div className={styles.innerContainer}>
-        <Avatar variant="rounded">{dispatcher.name}</Avatar>
+        <Avatar variant="rounded">{server.name}</Avatar>
         <Stack
           sx={{
             display: "flex",
@@ -33,8 +32,7 @@ const PreviewUser = ({
           }}
           direction="row"
         >
-          <Typography fontWeight={700}>{dispatcher.name}</Typography>
-          {/*<Typography>{formatPhoneNumber(dispatcher.phone)}</Typography>*/}
+          <Typography fontWeight={700}>{server.name}</Typography>
         </Stack>
       </div>
       <div className={styles.editButton}>
@@ -46,15 +44,8 @@ const PreviewUser = ({
         </IconButton>
       </div>
       <Divider sx={{ margin: "12px 0" }} />
-      <Stack direction="row" alignItems="center" justifyContent="space-between">
-        <Chip
-          size={"small"}
-          color={dispatcher.active ? "success" : "default"}
-          label={dispatcher.active ? "Активный" : "Деактивированный"}
-        />
-      </Stack>
     </div>
   );
 };
 
-export default PreviewUser;
+export default PreviewServer;

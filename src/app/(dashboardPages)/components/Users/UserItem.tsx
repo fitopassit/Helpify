@@ -5,7 +5,7 @@ import { User } from "@prisma/client";
 import React, { useState } from "react";
 
 import EditUser from "./EditUser";
-import PreviewUser from "@/app/(dashboardPages)/components/PreviewUser";
+import PreviewUser from "@/app/(dashboardPages)/components/Users/PreviewUser";
 
 export const UserItem = ({ user }: { user: User }) => {
   const [editMode, setEditMode] = useState(false);
