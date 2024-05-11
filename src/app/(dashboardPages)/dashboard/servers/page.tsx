@@ -13,7 +13,6 @@ export default async function Admins() {
   
   
   const servers = await getServers();
-  // console.log('servers list', servers);
   const session = await getServerSession(authOptions);
 
   const haveAccess = getAllowedTabsForRoleByPathname(

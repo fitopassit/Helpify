@@ -85,3 +85,37 @@ export const updateUser = async (formData: FormData) => {
     return e;
   }
 };
+
+const zCreateServer = z.object({
+  name: z.string(),
+});
+
+export async function createServer(formData: FormData) {
+  const res = zCreateServer.parse(Object.fromEntries(formData));
+  const { name } = res;
+
+  try {
+    const existingServer = await prisma.server.findFirst({ where: { name } });
+
+    if (existingServer) {
+      await prisma.server.update({
+        where: {
+          name,
+        },
+        data: {
+          name,
+        },
+      });
+    } else {
+      console.log("create server2", name);
+      await prisma.server.create({
+        data: {
+          name: name,
+        },
+      });
+    }
+  } catch (e) {
+    console.log(e);
+    if (e instanceof Error) throw new Error(e.message);
+  }
+}
