@@ -1,4 +1,4 @@
-import { SearchComponent } from "@/app/(userPages)/[serverName]/components/SearchComponent";
+import { SearchComponent } from "@/app/(clientPages)/[serverName]/components/SearchComponent";
 
 interface Params {
   serverName: string;

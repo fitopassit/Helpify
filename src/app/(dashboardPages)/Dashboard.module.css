@@ -1,0 +1,42 @@
+.body {
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.body > div[id="nprogress"] {
+  z-index: 1300;
+  position: relative;
+}
+
+.link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.disabledLink {
+  cursor: not-allowed;
+}
+
+@media print {
+  .root {
+    display: none;
+  }
+
+  .rootAside {
+    display: none;
+  }
+
+  .rootAsideToolbar {
+    display: none;
+  }
+}
+
+.background {
+  position: fixed;
+  bottom: 0px;
+  width: 240px;
+  height: 109px;
+  background-image: url(/ny_background.svg);
+  background-repeat: repeat-x;
+  background-position: right bottom;
+}
