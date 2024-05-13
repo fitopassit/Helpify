@@ -1,3 +1,11 @@
+import { Role } from "@prisma/client";
+
+export const ROLE_STATUS_COLOR: Record<Role, string> = {
+  Curator: "#388e3c",
+  Admin: "#ffffff",
+  User: "#00f4ff",
+  Editor: "#0288d1",
+};
 // Кодексы
 export const CONSTITUTION = "constitution"; //Конституция
 export const CRIMINAL_CODE = "criminalCode"; // Уголовный кодекс

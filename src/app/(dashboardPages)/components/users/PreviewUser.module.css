@@ -1,0 +1,26 @@
+.container {
+    box-shadow: rgba(0, 0, 0, 0.04) 0px 5px 22px,
+    rgba(0, 0, 0, 0.03) 0px 0px 0px 0.5px;
+    padding: 12px;
+    width: 100%;
+    position: relative;
+}
+
+.innerContainer {
+    display: flex;
+    align-items: start;
+    min-height: 48px;
+}
+
+.list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    padding: 24px;
+}
+
+.editButton {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+}

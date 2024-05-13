@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import { ModalWelcomeInfo } from "@/app/components/Header/components/ModalWelcomeInfo";
+import { ModalWelcomeInfo } from "@/app/(clientPages)/components/Header/components/ModalWelcomeInfo";
 
 import styles from "./CustomBadge.module.css";
 

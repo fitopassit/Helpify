@@ -18,9 +18,7 @@ const Page = ({ params }: { params: Params }) => {
     "Miami",
     "Las_Vegas",
   ];
-  // const router = useRouter()
-  // console.log("props", serverName);
-  // const {name} = router.query;
+
   if (!ALLOWED_SERVE_NAME.includes(serverName)) {
     return <p>Недопустимый ID</p>;
   }

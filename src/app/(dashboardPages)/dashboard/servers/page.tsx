@@ -1,17 +1,14 @@
 import { Alert, Button, Typography } from "@mui/material";
 import { getServerSession } from "next-auth";
 import React from "react";
+
+import ServersList from "@/app/(dashboardPages)/components/servers/ServersList";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { getServers } from "@/app/models/users";
 import { ADMINS, getAllowedTabsForRoleByPathname } from "@/app/utils/roleModel";
-import FilterServers from "@/app/(dashboardPages)/components/Servers/FilterServers";
-
 
 export const dynamic = "force-dynamic";
-export default async function Admins() {
-
-  
-  
+export default async function Page() {
   const servers = await getServers();
   const session = await getServerSession(authOptions);
 
@@ -44,7 +41,7 @@ export default async function Admins() {
           Добавить сервер
         </Button>
       </div>
-      <FilterServers servers={servers} />
+      <ServersList servers={servers} />
     </div>
   );
 }

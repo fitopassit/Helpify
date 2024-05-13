@@ -23,8 +23,8 @@ model User {
   UpdatedLaws            Laws[]
   UpdatedServerRules     ServerRules[]
   UpdatedSubChapterItems SubChapterItem[]
-  Server                 Server?          @relation(fields: [connectedServerId], references: [id])
-  connectedServerId      String?
+  ConnectedServers       Server[]         @relation("ConnectedServers")
+  ServersUpdatedBy       Server[]         @relation("ServerUpdatedBy")
 
   @@map("users")
 }
@@ -57,7 +57,10 @@ model Server {
   name             String
   allLaws          Laws[]
   localServerRules ServerRules[]
-  Users            User[]
+  Users            User[]        @relation("ConnectedServers")
+  updatedAt        DateTime      @updatedAt
+  updatedBy        String
+  UpdatedByUser    User          @relation("ServerUpdatedBy", fields: [updatedBy], references: [id])
 
   @@map("servers")
 }
@@ -66,10 +69,10 @@ model Laws {
   id            String    @id @default(uuid())
   name          String
   updatedAt     DateTime  @updatedAt
-  updatedBy     String
-  serverId      String
   chapters      Chapter[]
+  serverId      String
   Server        Server    @relation(fields: [serverId], references: [id])
+  updatedBy     String
   updatedByUser User      @relation(fields: [updatedBy], references: [id])
 
   @@map("laws")
@@ -154,137 +157,3 @@ enum Role {
   Editor
   User
 }
-
-// model User {
-//   id                     String           @id @default(uuid())
-//   name                   String
-//   email                  String           @unique
-//   isDisabled             Boolean          @default(false)
-//   role                   Role
-//   createdAt              DateTime         @default(now())
-//   updatedAt              DateTime         @updatedAt
-//   connectedServerId      String
-//   UpdatedChapterItem     ChapterItem[]
-//   UpdatedChapter         Chapter[]
-//   UpdatedLaws            Laws[]
-//   UpdatedServerRules     ServerRules[]
-//   UpdatedSubChapterItems SubChapterItem[]
-//   Server                 Server           @relation(fields: [connectedServerId], references: [id])
-//
-//   @@index([connectedServerId], map: "users_connectedServerId_fkey")
-//   @@map("users")
-// }
-//
-// model Server {
-//   id               String        @id @default(uuid())
-//   name             String
-//   allLaws          Laws[]
-//   localServerRules ServerRules[]
-//   Users            User[]
-//
-//   @@map("servers")
-// }
-//
-// model Laws {
-//   id            String    @id @default(uuid())
-//   name          String
-//   updatedAt     DateTime  @updatedAt
-//   updatedBy     String
-//   serverId      String
-//   chapters      Chapter[]
-//   Server        Server    @relation(fields: [serverId], references: [id])
-//   updatedByUser User      @relation(fields: [updatedBy], references: [id])
-//
-//   @@index([serverId], map: "laws_serverId_fkey")
-//   @@index([updatedBy], map: "laws_updatedBy_fkey")
-//   @@map("laws")
-// }
-//
-// model ServerRules {
-//   id            String    @id @default(uuid())
-//   name          String
-//   updatedAt     DateTime  @updatedAt
-//   updatedBy     String
-//   serverId      String
-//   chapters      Chapter[]
-//   Server        Server    @relation(fields: [serverId], references: [id])
-//   updatedByUser User      @relation(fields: [updatedBy], references: [id])
-//
-//   @@index([serverId], map: "serverRules_serverId_fkey")
-//   @@index([updatedBy], map: "serverRules_updatedBy_fkey")
-//   @@map("serverRules")
-// }
-//
-// model GlobalServerRules {
-//   id       String    @id @default(uuid())
-//   name     String
-//   chapters Chapter[]
-//
-//   @@map("globalServerRules")
-// }
-//
-// model Chapter {
-//   id                  String             @id @default(uuid())
-//   chapterNumber       String
-//   chapterName         String
-//   updatedAt           DateTime           @updatedAt
-//   updatedBy           String
-//   rulesId             String?
-//   globalServerRulesId String?
-//   lawsId              String?
-//   chapterItems        ChapterItem[]
-//   GlobalServerRules   GlobalServerRules? @relation(fields: [globalServerRulesId], references: [id])
-//   Laws                Laws?              @relation(fields: [lawsId], references: [id])
-//   ServerRules         ServerRules?       @relation(fields: [rulesId], references: [id])
-//   updatedByUser       User               @relation(fields: [updatedBy], references: [id])
-//
-//   @@index([globalServerRulesId], map: "chapters_globalServerRulesId_fkey")
-//   @@index([lawsId], map: "chapters_lawsId_fkey")
-//   @@index([rulesId], map: "chapters_rulesId_fkey")
-//   @@index([updatedBy], map: "chapters_updatedBy_fkey")
-//   @@map("chapters")
-// }
-//
-// model ChapterItem {
-//   id            String           @id @default(uuid())
-//   article       String
-//   titleArticle  String
-//   punishment    Json?
-//   keyword       Json?
-//   exception     String?
-//   explanation   String?
-//   note          String?
-//   updatedAt     DateTime         @updatedAt
-//   updatedBy     String
-//   chapterId     String
-//   Chapter       Chapter          @relation(fields: [chapterId], references: [id], onDelete: Cascade)
-//   UpdatedByUser User             @relation(fields: [updatedBy], references: [id])
-//   list          SubChapterItem[]
-//
-//   @@index([chapterId], map: "chapterItems_chapterId_fkey")
-//   @@index([updatedBy], map: "chapterItems_updatedBy_fkey")
-//   @@map("chapterItems")
-// }
-//
-// model SubChapterItem {
-//   id            String      @id @default(uuid())
-//   article       String
-//   titleArticle  String
-//   note          String?
-//   exception     String?
-//   updatedAt     DateTime    @updatedAt
-//   updatedBy     String
-//   chapterItemId String
-//   ChapterItem   ChapterItem @relation(fields: [chapterItemId], references: [id], onDelete: Cascade)
-//   UpdatedByUser User        @relation(fields: [updatedBy], references: [id])
-//
-//   @@index([chapterItemId], map: "subChapterItems_chapterItemId_fkey")
-//   @@index([updatedBy], map: "subChapterItems_updatedBy_fkey")
-//   @@map("subChapterItems")
-// }
-//
-// enum Role {
-//   Admin
-//   Curator
-//   Editor
-// }

@@ -2,8 +2,8 @@ import { Link, Typography } from "@mui/material";
 import classNames from "classnames";
 import Image from "next/image";
 
-import LogoWashington from "@/../public/washington_famaliy_logo.png";
-import TabsHeader from "@/app/components/Header/components/TabsHeader/TabsHeader";
+import LogoWashington from "../../../../../public/washington_famaliy_logo.png";
+import TabsHeader from "@/app/(clientPages)/components/Header/components/TabsHeader/TabsHeader";
 import { CustomBadge } from "../CustomBadge";
 import styles from "./Header.module.css";
 import { getServerSession } from "next-auth";

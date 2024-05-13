@@ -273,3 +273,7 @@ const sortAndFilterCodexes = (codexes: IData) => {
   }
   return result;
 };
+
+export const fixedUrlWithWhite = (url: string) => {
+  return url.replace(/%20/g, " ")
+}

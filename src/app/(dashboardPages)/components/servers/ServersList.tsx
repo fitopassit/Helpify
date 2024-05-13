@@ -3,12 +3,12 @@
 import { List } from "@mui/material";
 import { Server } from "@prisma/client";
 
-import styles from "@/app/(dashboardPages)/components/Users/PreviewUser.module.css";
+import styles from "@/app/(dashboardPages)/components/servers/PreviewServer.module.css";
 
 import { ServerItem } from "./ServerItem";
 
 
-const FilterServers = ({ servers }: { servers: Server[] }) => {
+const ServersList = ({ servers }: { servers: Server[] }) => {
 
   return (
     <>
@@ -21,4 +21,4 @@ const FilterServers = ({ servers }: { servers: Server[] }) => {
   );
 };
 
-export default FilterServers;
+export default ServersList;

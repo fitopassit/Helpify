@@ -1,4 +1,5 @@
 import { PrismaAdapter } from "@auth/prisma-adapter";
+import { User } from "@prisma/client";
 import NextAuth from "next-auth";
 import { JWT } from "next-auth/jwt";
 import DiscordProvider from "next-auth/providers/discord";
@@ -13,7 +14,7 @@ interface Session {
     role: "Admin" | "Curator" | "Editor" | "User";
     id: string;
   };
-  expires: string,
+  expires: string;
 }
 
 export const authOptions = {
@@ -31,15 +32,28 @@ export const authOptions = {
     strategy: "jwt",
   },
   callbacks: {
-    async session({ session, token }: { session: Session; token: JWT }) {
+    async jwt({ token, user }: { token: JWT; user: User | undefined }) {
       const dbEntry = await prisma.user.findFirst({
-        where: { id: token.id },
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        where: { id: token?.id ?? user?.id },
       });
-      if (session.user) {
+
+      if (user && dbEntry) {
+        token.role = dbEntry.role;
+        token.id = user.id;
+      }
+      return token;
+    },
+
+    async session({ session, token }: { session: Session; token: JWT }) {
+      if ( !token.id) return null;
+      const dbEntry = await prisma.user.findUnique({
+        where: { id: String(token?.id) },
+      });
+      if ('user' in session && session.user) {
         session.user.role = dbEntry ? dbEntry.role : token.role;
         session.user.id = token.id;
       }
-
       return session;
     },
   },

@@ -1,17 +1,17 @@
+"use server";
+
 import { Alert, Button, Typography } from "@mui/material";
 import { getServerSession } from "next-auth";
 import React from "react";
 
-import FilterUsers from "@/app/(dashboardPages)/components/Users/FilterUsers";
+import FilterUsers from "@/app/(dashboardPages)/components/users/FilterUsers";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { getUserByRole } from "@/app/models/users";
 import { ADMINS, getAllowedTabsForRoleByPathname } from "@/app/utils/roleModel";
+import { fixedUrlWithWhite } from "@/app/utils/utils";
 
-export const dynamic = "force-dynamic";
-export default async function Admins() {
-  const admins = await getUserByRole("Admin");
+export async function Page({ params }: { params: { serverName: string } }) {
   const session = await getServerSession(authOptions);
-
+  const currentServer = fixedUrlWithWhite(params.serverName);
   const haveAccess = getAllowedTabsForRoleByPathname(
     session?.user?.role,
     ADMINS,
@@ -31,17 +31,19 @@ export default async function Admins() {
         }}
       >
         <Typography variant={"h4"} sx={{ marginBottom: 2 }}>
-          Список всех авторизованных пользователей
+          Кодексы сервера {currentServer}
         </Typography>
         <Button
           variant={"outlined"}
           sx={{ marginBottom: 2 }}
-          href={"/dashboard/users/add"}
+          href={`/dashboard/servers/${currentServer}/code/add`}
         >
-          Создать администратора
+          Добавление кодекса сервера
         </Button>
       </div>
-      <FilterUsers users={admins} />
+      {/*<FilterUsers users={users} />*/}
     </div>
   );
 }
+
+export default Page;

@@ -5,7 +5,7 @@ import { User } from "@prisma/client";
 import React, { useState } from "react";
 
 import EditUser from "./EditUser";
-import PreviewUser from "@/app/(dashboardPages)/components/Users/PreviewUser";
+import PreviewUser from "@/app/(dashboardPages)/components/users/PreviewUser";
 
 export const UserItem = ({ user }: { user: User }) => {
   const [editMode, setEditMode] = useState(false);
@@ -24,7 +24,7 @@ export const UserItem = ({ user }: { user: User }) => {
 
   return (
     <ListItem disablePadding>
-      <PreviewUser dispatcher={user} onChangeMode={onChangeMode} />
+      <PreviewUser user={user} onChangeMode={onChangeMode} />
 
       <EditUser
         state={state}

@@ -53,15 +53,6 @@ export const MainGroupSidebar = ({
       <Divider />
       <SidebarGroup name={"Основные"}>
         <>
-          {allowedTabs.includes(USERS) && (
-            <SidebarItem
-              icon={<PersonIcon />}
-              path={USERS}
-              onClick={handleToggleDrawer}
-            >
-              Юзеры
-            </SidebarItem>
-          )}
           {allowedTabs.includes(SERVERS) && (
             <SidebarItem
               icon={<StorageIcon />}
@@ -69,24 +60,6 @@ export const MainGroupSidebar = ({
               onClick={handleToggleDrawer}
             >
               Сервера
-            </SidebarItem>
-          )}
-          {allowedTabs.includes(USERS) && (
-            <SidebarItem
-              icon={<ArticleIcon />}
-              path={USERS}
-              onClick={handleToggleDrawer}
-            >
-              Разделы
-            </SidebarItem>
-          )}
-          {allowedTabs.includes(USERS) && (
-            <SidebarItem
-              icon={<DescriptionIcon />}
-              path={USERS}
-              onClick={handleToggleDrawer}
-            >
-              Статьи
             </SidebarItem>
           )}
 

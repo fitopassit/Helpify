@@ -5,8 +5,8 @@ import { getServerSession } from "next-auth";
 import DiscordProvider from "next-auth/providers/discord";
 
 import { ServerSessionProvider } from "@/app/api/auth/[...nextauth]/ServerSessionProvider";
-import { Footer } from "@/app/components/Footer";
-import { Header } from "@/app/components/Header";
+import { Footer } from "@/app/(clientPages)/components/Footer";
+import { Header } from "@/app/(clientPages)/components/Header";
 import ThemeProviderContext from "@/app/context/ThemeProviderContext";
 
 import styles from "./page.module.css";

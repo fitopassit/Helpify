@@ -7,22 +7,32 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { User } from "@prisma/client";
+import { Role, User } from "@prisma/client";
 import React from "react";
 
-import styles from "@/app/(dashboardPages)/components/Users/PreviewUser.module.css";
+import styles from "@/app/(dashboardPages)/components/users/PreviewUser.module.css";
+import { ROLE_STATUS_COLOR } from "@/app/utils/contants";
+
+type ValueType = keyof typeof Role;
+
+const AllRoles = {
+  Admin: "Администрация",
+  Curator: "Куратор",
+  Editor: "Редактор",
+  User: "Обычный пользователь",
+};
 
 const PreviewUser = ({
-  dispatcher,
+  user,
   onChangeMode,
 }: {
-  dispatcher: User;
+  user: User;
   onChangeMode: (state: boolean) => void;
 }) => {
   return (
     <div className={styles.container}>
       <div className={styles.innerContainer}>
-        <Avatar variant="rounded">{dispatcher.name}</Avatar>
+        <Avatar variant="rounded">{user.name}</Avatar>
         <Stack
           sx={{
             display: "flex",
@@ -33,8 +43,7 @@ const PreviewUser = ({
           }}
           direction="row"
         >
-          <Typography fontWeight={700}>{dispatcher.name}</Typography>
-          {/*<Typography>{formatPhoneNumber(dispatcher.phone)}</Typography>*/}
+          <Typography fontWeight={700}>{user.name}</Typography>
         </Stack>
       </div>
       <div className={styles.editButton}>
@@ -49,8 +58,17 @@ const PreviewUser = ({
       <Stack direction="row" alignItems="center" justifyContent="space-between">
         <Chip
           size={"small"}
-          color={dispatcher.active ? "success" : "default"}
-          label={dispatcher.active ? "Активный" : "Деактивированный"}
+          icon={
+            <span
+              style={{
+                background: ROLE_STATUS_COLOR[user.role as ValueType],
+                height: "12px",
+                width: "12px",
+                borderRadius: "50%",
+              }}
+            />
+          }
+          label={AllRoles[user.role]}
         />
       </Stack>
     </div>

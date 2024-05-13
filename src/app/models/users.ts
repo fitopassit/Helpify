@@ -1,8 +1,10 @@
 "use server";
 
 import { Server, User } from "@prisma/client";
+import { getServerSession } from "next-auth";
 import z from "zod";
 
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { prisma } from "@/lib/prisma";
 
 export const addServerLawChapter = async () => {
@@ -38,7 +40,7 @@ export const getUsers = async () => {
 
 // servers: Server["name"]
 export const getServers = async () => {
-  return await prisma.server.findMany({});
+  return prisma.server.findMany({});
 };
 
 export const getUserByRole = async (role: User["role"]) => {
@@ -91,6 +93,7 @@ const zCreateServer = z.object({
 });
 
 export async function createServer(formData: FormData) {
+  const session = await getServerSession(authOptions);
   const res = zCreateServer.parse(Object.fromEntries(formData));
   const { name } = res;
 
@@ -104,13 +107,14 @@ export async function createServer(formData: FormData) {
         },
         data: {
           name,
+          updatedBy: session.user.id,
         },
       });
     } else {
-      console.log("create server2", name);
       await prisma.server.create({
         data: {
           name: name,
+          updatedBy: session.user.id,
         },
       });
     }
