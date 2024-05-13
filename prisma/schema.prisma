@@ -8,7 +8,7 @@ datasource db {
 }
 
 model User {
-  id                     String           @id @default(cuid())
+  id                     String           @id @default(uuid())
   name                   String?
   isDisabled             Boolean          @default(false)
   email                  String?          @unique
@@ -18,19 +18,19 @@ model User {
   accounts               Account[]
   createdAt              DateTime         @default(now())
   updatedAt              DateTime         @updatedAt
-  UpdatedChapterItem     ChapterItem[]
-  UpdatedChapter         Chapter[]
-  UpdatedLaws            Laws[]
-  UpdatedServerRules     ServerRules[]
-  UpdatedSubChapterItems SubChapterItem[]
-  ConnectedServers       Server[]         @relation("ConnectedServers")
-  ServersUpdatedBy       Server[]         @relation("ServerUpdatedBy")
+  updatedChapterItem     ChapterItem[]
+  updatedChapter         Chapter[]
+  updatedLaws            Laws[]
+  updatedServerRules     ServerRules[]
+  updatedSubChapterItems SubChapterItem[]
+  connectedServers       Server[]         @relation("connectedServers")
+  serversUpdatedBy       Server[]         @relation("serverUpdatedBy")
 
   @@map("users")
 }
 
 model Account {
-  id                       String  @id @default(cuid())
+  id                       String  @id @default(uuid())
   userId                   String  @unique
   type                     String
   provider                 String
@@ -50,17 +50,18 @@ model Account {
 
   @@unique([provider, providerAccountId])
   @@index([userId])
+  @@map("account")
 }
 
 model Server {
   id               String        @id @default(uuid())
   name             String
-  allLaws          Laws[]
+  serverLaws       Laws[]
   localServerRules ServerRules[]
-  Users            User[]        @relation("ConnectedServers")
+  users            User[]        @relation("connectedServers")
   updatedAt        DateTime      @updatedAt
   updatedBy        String
-  UpdatedByUser    User          @relation("ServerUpdatedBy", fields: [updatedBy], references: [id])
+  updatedByUser    User          @relation("serverUpdatedBy", fields: [updatedBy], references: [id])
 
   @@map("servers")
 }
@@ -85,7 +86,7 @@ model ServerRules {
   updatedBy     String
   serverId      String
   chapters      Chapter[]
-  Server        Server    @relation(fields: [serverId], references: [id])
+  server        Server    @relation(fields: [serverId], references: [id])
   updatedByUser User      @relation(fields: [updatedBy], references: [id])
 
   @@map("serverRules")
@@ -109,8 +110,8 @@ model Chapter {
   globalServerRulesId String?
   lawsId              String?
   chapterItems        ChapterItem[]
-  GlobalServerRules   GlobalServerRules? @relation(fields: [globalServerRulesId], references: [id])
-  Laws                Laws?              @relation(fields: [lawsId], references: [id])
+  globalServerRules   GlobalServerRules? @relation(fields: [globalServerRulesId], references: [id])
+  laws                Laws?              @relation(fields: [lawsId], references: [id])
   ServerRules         ServerRules?       @relation(fields: [rulesId], references: [id])
   updatedByUser       User               @relation(fields: [updatedBy], references: [id])
 
@@ -122,15 +123,14 @@ model ChapterItem {
   article       String
   titleArticle  String
   punishment    Json?
-  keyword       Json?
   exception     String?
   explanation   String?
   note          String?
   updatedAt     DateTime         @updatedAt
   updatedBy     String
   chapterId     String
-  Chapter       Chapter          @relation(fields: [chapterId], references: [id], onDelete: Cascade)
-  UpdatedByUser User             @relation(fields: [updatedBy], references: [id])
+  chapter       Chapter          @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  updatedByUser User             @relation(fields: [updatedBy], references: [id])
   list          SubChapterItem[]
 
   @@map("chapterItems")
@@ -145,8 +145,8 @@ model SubChapterItem {
   updatedAt     DateTime    @updatedAt
   updatedBy     String
   chapterItemId String
-  ChapterItem   ChapterItem @relation(fields: [chapterItemId], references: [id], onDelete: Cascade)
-  UpdatedByUser User        @relation(fields: [updatedBy], references: [id])
+  chapterItem   ChapterItem @relation(fields: [chapterItemId], references: [id], onDelete: Cascade)
+  updatedByUser User        @relation(fields: [updatedBy], references: [id])
 
   @@map("subChapterItems")
 }

@@ -8,6 +8,7 @@ import FilterUsers from "@/app/(dashboardPages)/components/users/FilterUsers";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { ADMINS, getAllowedTabsForRoleByPathname } from "@/app/utils/roleModel";
 import { fixedUrlWithWhite } from "@/app/utils/utils";
+import prisma from "@/lib/prisma";
 
 export async function Page({ params }: { params: { serverName: string } }) {
   const session = await getServerSession(authOptions);
@@ -20,7 +21,27 @@ export async function Page({ params }: { params: { serverName: string } }) {
   if (!haveAccess) {
     return <Alert severity={"error"}>У вас нет доступа</Alert>;
   }
-
+  // await prisma.user.update({
+  //   where: {
+  //     id: 'clw2f3um60000ramd93xywmu9',
+  //   },
+  //   data: {
+  //     ConnectedServers: {
+  //       connect: {
+  //         id: '35e8cfb5-ac57-441d-9f12-284270f4a3a3',
+  //       },
+  //     },
+  //   },
+  // })
+  // const user = await prisma.server.findUnique({
+  //   where: {
+  //     id: "35e8cfb5-ac57-441d-9f12-284270f4a3a3",
+  //   },
+  //   include: {
+  //     Users: true,
+  //   },
+  // });
+  // console.log("user", user);
   return (
     <div>
       <div

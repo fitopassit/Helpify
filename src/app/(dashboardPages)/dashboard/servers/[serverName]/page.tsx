@@ -52,8 +52,8 @@ export async function Page({ params }: { params: { serverName: string } }) {
         </Button>
 
       </div>
-      <SearchUsers/>
-      <FilterUsers users={users} />
+      <SearchUsers users={users}/>
+
     </div>
   );
 }

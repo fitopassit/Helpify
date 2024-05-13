@@ -22,7 +22,7 @@ const allFilters: TypeFilters[] = [
   },
   { label: "Кураторы", value: "Curator" },
   { label: "Редакторы", value: "Editor" },
-  { label: "Обычный пользователи", value: "User" },
+  { label: "Обычные пользователи", value: "User" },
 ];
 
 export function FilterUsers({ users }: { users: User[] }) {

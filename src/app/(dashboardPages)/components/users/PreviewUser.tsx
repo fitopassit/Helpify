@@ -19,7 +19,7 @@ const AllRoles = {
   Admin: "Администрация",
   Curator: "Куратор",
   Editor: "Редактор",
-  User: "Обычный пользователь",
+  User: "Обычные пользователь",
 };
 
 const PreviewUser = ({
