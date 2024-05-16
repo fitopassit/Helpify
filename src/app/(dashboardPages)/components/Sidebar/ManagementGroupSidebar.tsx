@@ -29,34 +29,6 @@ export const ManagementGroupSidebar = ({
             Админка
           </SidebarItem>
         )}
-
-
-        {/*{allowedTabs.includes(DRIVERS) && (*/}
-        {/*  <SidebarItem*/}
-        {/*    icon={*/}
-        {/*      <div*/}
-        {/*        style={{ transform: "rotate(90deg)", height: 24, width: 24 }}*/}
-        {/*      >*/}
-        {/*        <DriverIcon height={24} width={24} />*/}
-        {/*      </div>*/}
-        {/*    }*/}
-        {/*    path={DRIVERS}*/}
-        {/*    onClick={handleToggleDrawer}*/}
-        {/*  >*/}
-        {/*    Водители*/}
-        {/*  </SidebarItem>*/}
-        {/*)}*/}
-
-        {/*{allowedTabs.includes(ADMINS) && (*/}
-        {/*  <SidebarItem*/}
-        {/*    icon={<SupervisorAccountIcon />}*/}
-        {/*    path={ADMINS}*/}
-        {/*    onClick={handleToggleDrawer}*/}
-        {/*  >*/}
-        {/*    Администраторы*/}
-        {/*  </SidebarItem>*/}
-        {/*)}*/}
-
       </SidebarGroup>
     </>
   );

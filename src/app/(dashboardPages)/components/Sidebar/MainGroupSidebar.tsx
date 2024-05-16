@@ -62,51 +62,6 @@ export const MainGroupSidebar = ({
               Сервера
             </SidebarItem>
           )}
-
-          {/*<Collapse in={isOpenCollapse} timeout="auto" unmountOnExit>*/}
-          {/*  <List component="div" disablePadding>*/}
-          {/*    {allowedTabs.includes(USERS) && (*/}
-          {/*      <SidebarItem*/}
-          {/*        icon={<SearchIcon />}*/}
-          {/*        path={USERS}*/}
-          {/*        onClick={handleToggleDrawer}*/}
-          {/*      >*/}
-          {/*        Список юзеров*/}
-          {/*      </SidebarItem>*/}
-          {/*    )}*/}
-          {/*    /!*{allowedTabs.includes(ORDERS) && (*!/*/}
-          {/*    /!*  <SidebarItem*!/*/}
-          {/*    /!*    path={ORDERS}*!/*/}
-          {/*    /!*    sx={{ paddingLeft: 4 }}*!/*/}
-          {/*    /!*    onClick={handleToggleDrawer}*!/*/}
-          {/*    /!*  >*!/*/}
-          {/*    /!*    Все билеты*!/*/}
-          {/*    /!*  </SidebarItem>*!/*/}
-          {/*    /!*)}*!/*/}
-
-          {/*    /!*{allowedTabs.includes(*!/*/}
-          {/*    /!*  userRole === "Agent" ? ORDERS_AGENT_ADD : ORDERS_ADD,*!/*/}
-          {/*    /!*) && (*!/*/}
-          {/*    /!*  <SidebarItem*!/*/}
-          {/*    /!*    path={userRole === "Agent" ? ORDERS_AGENT_ADD : ORDERS_ADD}*!/*/}
-          {/*    /!*    sx={{ paddingLeft: 4 }}*!/*/}
-          {/*    /!*    onClick={handleToggleDrawer}*!/*/}
-          {/*    /!*  >*!/*/}
-          {/*    /!*    Добавить билет*!/*/}
-          {/*    /!*  </SidebarItem>*!/*/}
-          {/*    /!*)}*!/*/}
-
-          {/*    /!*{allowedTabs.includes(ORDERS_REPORTING) && (*!/*/}
-          {/*    /!*  <SidebarItem*!/*/}
-          {/*    /!*    path={ORDERS_REPORTING}*!/*/}
-          {/*    /!*    sx={{ paddingLeft: 4 }}*!/*/}
-          {/*    /!*    onClick={handleToggleDrawer}*!/*/}
-          {/*    /!*  >*!/*/}
-          {/*    /!*    Отчетность*!/*/}
-          {/*    /!*  </SidebarItem>*!/*/}
-          {/*    /!*)}*!/*/}
-          {/*  </List>*/}
-          {/*</Collapse>*/}
         </>
       </SidebarGroup>
     </>
